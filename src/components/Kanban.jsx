@@ -40,10 +40,10 @@ const Kanban = () => {
                             ))}
                     </div>
                     <div>
-                    
+
+                    </div>
                 </div>
-                </div>
-                
+
             ))}
         </div>
     )
