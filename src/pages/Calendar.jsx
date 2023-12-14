@@ -2,76 +2,78 @@ import React, { useEffect, useState } from 'react';
 import Breadcrumb from '../components/Breadcrumb';
 
 const Calendar = () => {
-  const [today] = useState(new Date());
-  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
-  const [currentYear, setCurrentYear] = useState(today.getFullYear());
+  const [hoje] = useState(new Date());
+  const [mesAtual, setCurrentMonth] = useState(hoje.getMonth());
+  const [anoAtual, setCurrentYear] = useState(hoje.getFullYear());
 
-  const months = [
+  const meses = [
     "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
     "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
   ];
 
   const daysOfWeek = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
-  const showCalendar = (month, year) => {
-    const firstDay = (new Date(year, month, 1)).getDay(); // Primeiro dia da semana do mês
-    const daysInMonth = new Date(year, month + 1, 0).getDate(); // Número de dias no mês
+  const showCalendar = (mes, ano) => {
+    const primeiroDiaSemanaMes = (new Date(ano, mes, 1)).getDay(); // Dia da semana em que o mês começa
+    const diasNoMes = new Date(ano, mes + 1, 0).getDate(); // Número total de dias no mês
 
-    const days = [];
-    let date = 1;
+    const dias = [];
+    let dia = 1;
 
-    for (let i = 0; i < 6; i++) {
-      const weekDays = [];
-      for (let j = 0; j < 7; j++) {
-        if ((i === 0 && j < firstDay) || date > daysInMonth) {
-          weekDays.push(<td key={`empty-${i}-${j}`}></td>);
+    for (let semana = 0; semana < 6; semana++) {
+      const diasSemana = [];
+
+      for (let indiceDiasSemana = 0; indiceDiasSemana < 7; indiceDiasSemana++) {
+        if ((semana === 0 && indiceDiasSemana < primeiroDiaSemanaMes) || dia > diasNoMes) {
+          diasSemana.push(<td key={`vazio-${semana}-${indiceDiasSemana}`}>{dia}</td>);
         } else {
-          const isToday = date === today.getDate() && year === today.getFullYear() && month === today.getMonth();
-          weekDays.push(
-            <td key={`${year}-${month + 1}-${date}`} 
-            className={isToday ? 'font-bold border' : '' + 'hover:bg-strokedark hover:text-white transition-all duration-500 h-20 border p-3'}>
-              {date}
+          const eHoje = dia === hoje.getDate() && ano === hoje.getFullYear() && mes === hoje.getMonth();
+
+          diasSemana.push(
+            <td key={`${ano}-${mes + 1}-${dia}`}
+              className={eHoje ? 'font-bold border' : '' + 'hover:bg-strokedark hover:text-white transition-all duration-500 h-20 border p-3'}>
+              {dia}
             </td>
           );
-          date++;
+          dia++;
         }
       }
-      days.push(<tr key={`week-${i}`}>{weekDays}</tr>);
-      if (date > daysInMonth) {
+      dias.push(<tr key={`semana-${semana}`}>{diasSemana}</tr>);
+      if (dia > diasNoMes) {
         break;
       }
     }
 
-    return days;
+    return dias;
   };
 
   const updateCalendar = () => {
-    const calendarDays = showCalendar(currentMonth, currentYear);
+    const calendarDays = showCalendar(mesAtual, anoAtual);
     return calendarDays;
   };
 
   const next = () => {
-    const newYear = (currentMonth === 11) ? currentYear + 1 : currentYear;
-    const newMonth = (currentMonth + 1) % 12;
+    const newYear = (mesAtual === 11) ? anoAtual + 1 : anoAtual;
+    const newMonth = (mesAtual + 1) % 12;
     setCurrentYear(newYear);
     setCurrentMonth(newMonth);
   };
 
   const previous = () => {
-    const newYear = (currentMonth === 0) ? currentYear - 1 : currentYear;
-    const newMonth = (currentMonth === 0) ? 11 : currentMonth - 1;
+    const newYear = (mesAtual === 0) ? anoAtual - 1 : anoAtual;
+    const newMonth = (mesAtual === 0) ? 11 : mesAtual - 1;
     setCurrentYear(newYear);
     setCurrentMonth(newMonth);
   };
 
   useEffect(() => {
     updateCalendar();
-  }, [currentMonth, currentYear]);
+  }, [anoAtual, anoAtual]);
 
   return (
     <>
       <h3>Calendário</h3>
-      <h4 id="monthAndYear">{months[currentMonth]} {currentYear}</h4>
+      <h4 id="monthAndYear">{meses[mesAtual]} {anoAtual}</h4>
       <table className="w-full text-center">
         <thead>
           <tr className=''>
@@ -81,7 +83,7 @@ const Calendar = () => {
           </tr>
         </thead>
         <tbody>
-          {showCalendar(currentMonth, currentYear)}
+          {showCalendar(mesAtual, anoAtual)}
         </tbody>
       </table>
       <div className="form-inline">
