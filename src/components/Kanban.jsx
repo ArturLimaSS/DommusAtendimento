@@ -2,10 +2,13 @@ import CardIndicador from "./CardIndicador"
 import etapas from "../data/Etapas";
 import chamados from "../data/Chamados";
 import { useEffect, useState } from "react";
+import { usekanban } from "../context/KanbanContext";
 
 const Kanban = () => {
-
+    const { kanban, status } = usekanban();
     const [quantidadePorEtapa, setQuantidadePorEtapa] = useState([]);
+
+    console.log(kanban)
 
     useEffect(() => {
         const quantidade = etapas.map((etapa) => ({
@@ -21,13 +24,13 @@ const Kanban = () => {
             className="flex flex-row gap-6 p-3 overflow-x-auto "
             style={{ maxWidth: "100%" }}
         >
-            {etapas.map((etapa) => (
+            {Array.isArray(status) && status.map((etapa) => (
                 <div
                     key={etapa.id}
                     className="flex flex-col gap-3 flex-shrink-0 w-80 bg-gray-200 shadow-xl"
                 >
                     <div className="flex items-center justify-between flex-shrink-0 h-10 px-2 border-bottom-graydark bg-white shadow-xl dark:bg-strokedark">
-                        <span className="block text-sm font-medium">{etapa.title}</span>
+                        <span className="block text-sm font-medium">{etapa.desctription}</span>
                         <span className="block text-sm font-medium">
                             {quantidadePorEtapa.find((quantidadeEtapa) => quantidadeEtapa.etapa === etapa.id)?.quantidade || 0}
                         </span>
