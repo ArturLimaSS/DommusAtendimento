@@ -3,10 +3,19 @@ import etapas from "../data/Etapas";
 import chamados from "../data/Chamados";
 import { useEffect, useState } from "react";
 import { usekanban } from "../context/KanbanContext";
+import { TicketService } from "../apiservices/TicketServices";
 
 const Kanban = () => {
     const { kanban, status } = usekanban();
     const [quantidadePorEtapa, setQuantidadePorEtapa] = useState([]);
+    const [ticket, setTicket] = useState([]);
+
+    const handleTicket = async () => {
+        const response = await TicketService.show()
+        if(response.status === 200){
+            setTicket(response.data)
+        }
+    }
 
     console.log(kanban)
 
@@ -17,6 +26,7 @@ const Kanban = () => {
         }))
 
         setQuantidadePorEtapa(quantidade);
+        handleTicket()
     }, [])
 
     return (
@@ -36,8 +46,8 @@ const Kanban = () => {
                         </span>
                     </div>
                     <div className="flex gap-3 h-180 flex-col px-2 overflow-y-auto overflow-x-hidden">
-                        {chamados
-                            .filter((chamado) => chamado.status === etapa.id)
+                        {ticket
+                            .filter((chamado) => chamado.status_id === etapa.id)
                             .map((filteredChamado, idx) => (
                                 <CardIndicador key={idx} props={filteredChamado} />
                             ))}

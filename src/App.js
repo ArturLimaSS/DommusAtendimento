@@ -7,6 +7,7 @@ import SignIn from './pages/Authentication/SignIn.jsx';
 import SignUp from './pages/Authentication/SignUp.jsx';
 import Loader from './common/Loader/index.jsx';
 import routes from './routes/index.js';
+import { TicketPage } from './pages/Ticket.jsx';
 
 const DefaultLayout = lazy(() => import('./layout/DefaultLayout.jsx'));
 
@@ -45,6 +46,7 @@ function App() {
               />
             );
           })}
+          <Route path="/chamados/ticket/:id" element={<TicketPage />} /> 
         </Route>
       </Routes>
     </>

@@ -8,7 +8,7 @@ export const UserProvider = ({ children }) => {
 
     const handleUser = async () => {
         try {
-            const response = await UserService.getUser(2);
+            const response = await UserService.getUser(1);
             if (response.status === 200) {
                 setUser(response.data.user);
             }

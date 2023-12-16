@@ -6,14 +6,17 @@ import './index.css';
 import './satoshi.css';
 import { UserProvider } from './context/UserContext.jsx';
 import { KanbanProvider } from './context/KanbanContext.jsx';
+import { TicketProvider } from './context/TicketContext.jsx';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <UserProvider>
       <KanbanProvider>
-        <Router>
-          <App />
-        </Router>
+        <TicketProvider>
+          <Router>
+            <App />
+          </Router>
+        </TicketProvider>
       </KanbanProvider>
     </UserProvider>
   </React.StrictMode>
